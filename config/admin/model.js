@@ -61,18 +61,18 @@ router.get("/:id", (req, res, next) => {
         }
     });
 });
-// router.delete("/:id", (req, res, next) => {
-//     const id = req.params.id;
-//     const details = { '_id': ObjectID(id) };
-//     db.collection('models').deleteOne(details, (err, item) => {
-//         //handle not existing model
-//         if (err) {
-//             res.status(404).json({ status: 404, error: true, message: `the model ${id} does not exist` });
-//         } else {
-//             res.status(200);
-//         }
-//     });
-// });
+router.delete("/:id", (req, res, next) => {
+    const id = req.params.id;
+    const details = { '_id': ObjectID(id) };
+    db.collection('models').deleteOne(details, (err, item) => {
+        //handle not existing model
+        if (err) {
+            res.status(404).json({ status: 404, error: true, message: `the model ${id} does not exist` });
+        } else {
+            res.status(200).json({ status:200, message: `model was successfully deleted`});
+        }
+    });
+});
 
 module.exports =  (_db)=>{
     db = _db;
