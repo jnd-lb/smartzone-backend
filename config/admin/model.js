@@ -43,7 +43,37 @@ router.post("/", (req, res, next) => {
 
     
 });
-//["ops"][0]
+/////////////Get By ID/////////////
+router.get("/:id", (req, res, next) => {
+    const id = req.params.id;
+    const details = { '_id': ObjectID(id) };
+
+    db.collection('models').findOne(details, (err, item) => {
+        //handle not existing model
+        console.log(err)
+        console.log(item)
+        if (err) { res.status(404).json({ status: 404, error: true, message: `the model ${id} does not exist` }); }
+        else {
+            res.status(200).json({
+                status: 200,
+                data: item
+            });
+        }
+    });
+});
+// router.delete("/:id", (req, res, next) => {
+//     const id = req.params.id;
+//     const details = { '_id': ObjectID(id) };
+//     db.collection('models').deleteOne(details, (err, item) => {
+//         //handle not existing model
+//         if (err) {
+//             res.status(404).json({ status: 404, error: true, message: `the model ${id} does not exist` });
+//         } else {
+//             res.status(200);
+//         }
+//     });
+// });
+
 module.exports =  (_db)=>{
     db = _db;
     return router
