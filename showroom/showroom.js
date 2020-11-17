@@ -10,18 +10,18 @@ let db = null;
 
  //pricemin=x&pricemax&brand=x
 router.get("/",(req,res)=>{
+//TODO validate and sanitize the data passed through the query
+//TODO 
 
-    const details= {
-        price : {$lte:9999,$gte:0}
-    };
+    const details= {};
 
     if(req.query.brand) details.brand =  req.query.brand;
-     if(req.query.pricemax || req.query.pricemin ) details.price = {$lte:9999,$gte:0};
-     if(req.query.pricemax) details.price.$lte = parseInt(req.query.pricemax);
-     if(req.query.pricemin ) details.price.$gte= parseInt(req.query.pricemin);
+    if(req.query.pricemax || req.query.pricemin ) details.price = {$lte:9999,$gte:0};
+    if(req.query.pricemax) details.price.$lte = parseInt(req.query.pricemax);
+    if(req.query.pricemin ) details.price.$gte= parseInt(req.query.pricemin);
 
     console.log(details);
-    db.collection("models").find(details,(err,result)=>{
+    db.collection("models").find({},(err,result)=>{
         if(err) {
             res.status(500).json({
             status:500,
