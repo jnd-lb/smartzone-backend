@@ -13,27 +13,26 @@ router.use(bodyParser.urlencoded({extended: true}));
 //Add
 router.post("/", (req, res, next) => {
     //TODO sanitize user input
-    let {image, price, brand, frontCamera, rearCamera, size, battery, ram, cpu, sdStorage, cardSlot, os, date} = req.body;
+    let {modelName, brandId, screenSize, frontCameraRes, rearCamera, batteryCapacity,ram, cpu, price, releasedDate, os, dualSim} = req.body;
     //handle missing feild
-    if (!(image&& price && brand && frontCamera && rearCamera && size && battery && ram && cpu && sdStorage && cardSlot && os && date)) {
+    if (!(modelName && brandId && screenSize && frontCameraRes && rearCamera && batteryCapacity && ram && cpu && price && releasedDate && os && dualSim)) {
         res.status(403).json({ status: 403, error: true, message: 'all the features of the model should be provided' });
         return;
     }
 
     const newModel = {
-        image: image,
-        price: price,
-        brand: brand,
-        frontCamera: frontCamera,
-        rearCamera: rearCamera,
-        size: size,
-        battery: battery,
+        modelName: modelName,
+        brandId: brandId,
+        screenSize: screenSize,
+        frontCameraRes: frontCameraRes,
+        rearCameraRes: rearCameraRes,
+        batteryCapacity: batteryCapacity,
         ram: ram,
         cpu: cpu,
-        sdStorage: sdStorage,
-        cardSlot: cardSlot,
+        price: price,
+        releasedDate: releasedDate,
         os: os,
-        date: date
+        dualSim: dualSim
     };
 
     db.collection('models').insertOne(newModel, (err, results) => {
