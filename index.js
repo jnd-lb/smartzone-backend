@@ -7,7 +7,8 @@ const port = 3000;
 
 //routes
 const showroom = require("./showroom/showroom");
-const model = require("./config/admin/model");
+const model = require("./admin/model");
+const user = require("./admin/user");
 
 const uri = config.mongodb_uri;
 const client = new MongoClient(uri, { useNewUrlParser: true ,useUnifiedTopology: true});
@@ -18,6 +19,7 @@ try{
         const database = client.db("smartzone");      
         app.use("/model",showroom(database));
         app.use("/admin/model",model(database));
+        app.use("/admin",user(database));
       // perform actions on the collection object
       //client.close();
     });

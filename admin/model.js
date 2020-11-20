@@ -3,15 +3,15 @@ const Router = require("express").Router;
 const router = Router();
 const bodyParser = require("body-parser");
 const {ObjectID} = require('mongodb');
-
+const auth = require("../middleware/auth");
 let db = null;
 
 //body parser
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
 
-//Add
-router.post("/", (req, res, next) => {
+////Add////
+router.post("/", auth, (req, res, next) => {
     //TODO sanitize user input
     let {modelName, brandId, screenSize, frontCameraRes, rearCamera, batteryCapacity,ram, cpu, price, releasedDate, os, dualSim} = req.body;
     //handle missing feild
@@ -43,7 +43,7 @@ router.post("/", (req, res, next) => {
     
 });
 /////////////Get By ID/////////////
-router.get("/:id", (req, res, next) => {
+router.get("/:id", auth, (req, res, next) => {
     const id = req.params.id;
     const details = { '_id': ObjectID(id) };
 
@@ -60,7 +60,8 @@ router.get("/:id", (req, res, next) => {
         }
     });
 });
-router.delete("/:id", (req, res, next) => {
+///delete///
+router.delete("/:id", auth, (req, res, next) => {
     const id = req.params.id;
     const details = { '_id': ObjectID(id) };
     db.collection('models').deleteOne(details, (err, item) => {
