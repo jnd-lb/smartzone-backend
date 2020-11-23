@@ -9,7 +9,7 @@ const port = 3000;
 app.use('/uploads', express.static('uploads'));
 const showroom = require("./showroom/showroom");
 const dashboard = require("./admin/model");
-
+const user = require("./admin/user");
 
 const uri = config.mongodb_uri;
 const client = new MongoClient(uri, { useNewUrlParser: true ,useUnifiedTopology: true});
@@ -20,6 +20,7 @@ try{
         const database = client.db("smartzone");      
         app.use("/model",showroom(database));
         app.use("/admin/model",dashboard(database));
+        app.use("/admin",user(database));
       // perform actions on the collection object
       //client.close();
     });
