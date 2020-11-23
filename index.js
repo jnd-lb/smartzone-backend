@@ -6,7 +6,9 @@ const app = express();
 const port = 3000;
 
 //routes
+app.use('/uploads', express.static('uploads'));
 const showroom = require("./showroom/showroom");
+const dashboard = require("./admin/model");
 
 
 const uri = config.mongodb_uri;
@@ -17,6 +19,7 @@ try{
         if(err) throw "Error in the Database";
         const database = client.db("smartzone");      
         app.use("/model",showroom(database));
+        app.use("/admin/model",dashboard(database));
       // perform actions on the collection object
       //client.close();
     });
