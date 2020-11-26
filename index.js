@@ -3,13 +3,27 @@ const config = require("./config/config");
 
 const MongoClient = require('mongodb').MongoClient;
 const app = express();
-const port = 3000;
+const port = 8000;
 
+
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+        return res.status(200).json({});
+    }
+    next();
+  });
 //routes
 app.use('/uploads', express.static('uploads'));
-const showroom = require("./showroom/showroom");
-const dashboard = require("./admin/model");
-const user = require("./admin/user");
+const showroom = require("./routes/showroom/showroom");
+const dashboard = require("./routes/admin/model");
+const user = require("./routes/admin/user");
 
 const uri = config.mongodb_uri;
 const client = new MongoClient(uri, { useNewUrlParser: true ,useUnifiedTopology: true});
@@ -18,6 +32,7 @@ try{
     client.connect(err => {
         if(err) throw "Error in the Database";
         const database = client.db("smartzone");      
+        app.use("/uploads",express.static("uploads"));
         app.use("/model",showroom(database));
         app.use("/admin/model",dashboard(database));
         app.use("/admin",user(database));

@@ -24,7 +24,7 @@ router.get("/",(req,res)=>{
         { $lookup:
            {
              from: 'brands',
-             localField: 'brand_id',
+             localField: 'brandId',
              foreignField: '_id',
              as: 'brand'
            }
@@ -32,10 +32,15 @@ router.get("/",(req,res)=>{
         ]);
 
         //pagination
-        result.limit(10);
         let offset = parseInt(req.query.offset) || 0;
         result.skip(offset);
+        result.limit(10);
         result.toArray().then(arrayOfData => {
+            arrayOfData.map(e=>{
+                e.brand = e.brand;
+                return e;
+            });
+
             res.status(200).json(
                 {
                     status: 200,

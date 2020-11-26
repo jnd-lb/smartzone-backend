@@ -1,4 +1,4 @@
-const SmartPhone = require("./model/smartPhone");
+const SmartPhone = require("../model/smartPhone");
 const smartPhonesModel = require("./smartPhones");
 const mongoose = require('mongoose');
 const config = require("../../config/config");
