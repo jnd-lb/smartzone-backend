@@ -16,11 +16,11 @@ router.get("/",(req,res)=>{
     if (req.query.pricemin) details.price.$gte = parseInt(req.query.pricemin);
 
    let result = db.collection("models").aggregate([
-       {
+       /* {
         $match: {
             ...details
         }
-       },
+       }, */
         { $lookup:
            {
              from: 'brands',
@@ -28,18 +28,40 @@ router.get("/",(req,res)=>{
              foreignField: '_id',
              as: 'brand'
            }
-         }
+         },
+         {
+            $project :{
+                "brand":"$brand.name",
+"_id":1,
+"imgUrl":1,
+"modelName":1,
+"price":1,
+"releasedDate":1,
+"batteryCapacity":1,
+"cpu":1,
+"ram":1,
+"sim":1,
+"screenSize":1,
+"frontCameraRes":1,
+"rearCameraRes":1,
+"os":1,
+"memory": 1
+            }
+         },
+         {$unwind:"$brand"}
+         ,
+         {$match:{
+             //"brand":"Apple"
+             ...details
+         }}
         ]);
 
         //pagination
+
         let offset = parseInt(req.query.offset) || 0;
-        result.skip(offset);
-        result.limit(10);
+        //result.skip(offset);
+        //result.limit(10);
         result.toArray().then(arrayOfData => {
-            arrayOfData.map(e=>{
-                e.brand = e.brand;
-                return e;
-            });
 
             res.status(200).json(
                 {
