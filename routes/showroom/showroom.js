@@ -59,8 +59,8 @@ router.get("/",(req,res)=>{
         //pagination
 
         let offset = parseInt(req.query.offset) || 0;
-        //result.skip(offset);
-        //result.limit(10);
+        result.skip(offset);
+        result.limit(10);
         result.toArray().then(arrayOfData => {
 
             res.status(200).json(
