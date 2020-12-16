@@ -1,10 +1,11 @@
 const express = require("express");
 const config = require("./config/config");
+const cors = require("cors");
 
 const MongoClient = require('mongodb').MongoClient;
 const app = express();
 const port = 8000;
-
+app.use(cors());
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
@@ -17,12 +18,12 @@ app.use((req, res, next) => {
     }
     next();
   });
+
 //routes
 app.use('/uploads', express.static('uploads'));
 const showroom = require("./routes/showroom/showroom");
 const dashboard = require("./routes/admin/model");
 const user = require("./routes/admin/user");
-
 const uri = config.mongodb_uri;
 const client = new MongoClient(uri, { useNewUrlParser: true ,useUnifiedTopology: true});
 
@@ -37,6 +38,7 @@ try{
       // perform actions on the collection object
       //client.close();
     });
+
 }catch(e){
     app.use((req,res)=>{
         res.status(500).json({
@@ -46,7 +48,6 @@ try{
         });
     });
 }
-
 //here i will start listening to the requests 
 
 app.listen(port, () => {

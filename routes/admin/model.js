@@ -26,9 +26,6 @@ const fileFilter = (req, file, cb) => {
     }};
 const upload = multer({
     storage: storage,
-    limits: {
-        fileSize: 1024 * 1024 * 5
-    },
     fileFilter: fileFilter
 });
 ////////////End Of storage configuration////////////////
@@ -117,10 +114,12 @@ router.get("/",(req,res)=>{
 });
 
 ////Add////
-router.post("/", auth, upload.single("modelImage"), (req, res, next) => {
+router.post("/", auth /*, upload.single("modelImage")*/, (req, res, next) => {
     //TODO sanitize user input
     
     let {modelName, brandId, screenSize, frontCameraRes, rearCameraRes, batteryCapacity,ram, cpu, price, releasedDate, os, sim} = req.body;
+
+    /*
     const smartPhone = new SmartPhones({
         modelName:modelName,
         brandId:brandId,
@@ -134,17 +133,17 @@ router.post("/", auth, upload.single("modelImage"), (req, res, next) => {
         releasedDate:releasedDate,
         os:os,
         sim:sim,
-        imgUrl: req.file.path
+        imgUrl: "https://fdn2.gsmarena.com/vv/bigpic/oppo-reno5-5g.jpg"
     });
 
     smartPhone.save();
-    
-/* //handle missing feild
-    if (!(modelName && brandId && screenSize && frontCameraRes && rearCamera && batteryCapacity && ram && cpu && price && releasedDate && os && dualSim)) {
+    const smartPhone = new SmartPhones();
+*/    
+ //handle missing feild
+    if (!(modelName && brandId && screenSize && frontCameraRes && rearCamera && batteryCapacity && ram && cpu && price && releasedDate && os && sim)) {
         res.status(403).json({ status: 403, error: true, message: 'all the features of the model should be provided' });
         return;
     }
-    const smartPhone = new SmartPhones();
     const newModel = {
         modelName: modelName,
         brandId: brandId,
@@ -164,8 +163,6 @@ router.post("/", auth, upload.single("modelImage"), (req, res, next) => {
         if (err) res.status(500).json({ status: 500, error: true, message: "internal error" });
         res.status(201).json({ status: 201, data: results["ops"][0] });
     });
-*/
-    
 });
 
 /////////////Get By ID/////////////

@@ -25,10 +25,10 @@ const schema = new Schema({
   }
 });
 
-schema.path('email').validate(async (_email) => {
-  const emailCount = await mongoose.models.user.find({ email:_emai})
+/* schema.path('email').validate(async (_email) => {
+  const emailCount = await mongoose.models.user.find({ email:_email})
   return emailCount==null;
-}, 'Email already exists')
+}, 'Email already exists') */
 
 // fire a function before doc saved to db | before sign up
 /* schema.pre('save', async function (next) {
@@ -39,7 +39,7 @@ schema.path('email').validate(async (_email) => {
 });
  */
 // static method to login user
-schema.statics.login = async function(email, password) {
+/* schema.statics.login = async function(email, password) {
     const user = await this.findOne({ email });
     if (user) {
       const auth = await bcrypt.compare(password, user.password);
@@ -49,7 +49,7 @@ schema.statics.login = async function(email, password) {
       throw Error('incorrect password');
     }
     throw Error('incorrect email');
-  };
+  }; */
 
 //    validate: () => Promise.reject(new Error('Oops!'))
 
